@@ -4,11 +4,11 @@
 void ofApp::setup(){
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
-    fadeTimer.setLength(100);
+    fadeTimer.setLength(10);
     fadeTimer.start();
-    delayTimer.setFramerate(15);
-    hysteresis.setDelay(1);
-    hysteresis.set(false);
+    delayTimer.setFramerate(10);
+    hysteresis.setDelay(10);
+    hysteresis.set(true);
     lerpTimer.setDuration(10);
     lerpTimer.setToValue(0);
     lerpTimer.lerpToValue(20);
@@ -17,6 +17,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     rateTimer.tick();
+    fadeTimer.update(hysteresis);
 }
 
 //--------------------------------------------------------------
@@ -28,9 +29,9 @@ void ofApp::draw(){
         ofDrawBitmapString("delayTimer Triggered", 10, 40);
     }
     if(lerpTimer.getDone()){
-        ofDrawBitmapString("lerpTimer Triggered", 10, 60);
+        ofDrawBitmapString("lerpTimer Finished", 10, 60);
     }else{
-        ofDrawBitmapString(ofToString(lerpTimer.getProgress(), 3), 10, 60);
+        ofDrawBitmapString("lerpTimer "+ofToString(lerpTimer.getProgress(), 4), 10, 60);
     }
     if(fadeTimer.getActive()){
         ofDrawBitmapString("fadeTimer Active "+ofToString(fadeTimer.get(), 4), 10, 80);
@@ -38,6 +39,13 @@ void ofApp::draw(){
     
     ofDrawBitmapString("rateTimer "+ofToString(rateTimer.getFrameRate(), 4), 10, 100);
     ofDrawBitmapString("rateTimer "+ofToString(rateTimer.getPeriod(), 4), 10, 120);
+    
+    if(hysteresis.wasTriggered()){
+        ofDrawBitmapString("hysteresis Triggered ", 10, 140);
+    }
+    if(hysteresis.wasUntriggered()){
+        ofDrawBitmapString("hysteresis Untriggered ", 10, 140);
+    }
     
 }
 
