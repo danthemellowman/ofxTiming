@@ -58,6 +58,10 @@ public:
 			return 0;
 		}
 	}
+    bool isRising(){
+        return direction;
+    }
+    
 	bool getActive() {
 		return get() > 0;
 	}
